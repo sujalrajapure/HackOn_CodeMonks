@@ -3,200 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocablo</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>VocabMaster Battle</title>
+    <script src="/socket.io/socket.io.js"></script>
     <style>
         body {
-            background: linear-gradient(to bottom, #6366F1, #A855F7); /* Purple gradient background */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            overflow: hidden; /* Hide scrollbars */
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure full height */
-            align-items: center; /* Center content horizontally */
-            justify-content: flex-start; /* Align content to the top */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
         }
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
         }
-        /* Example of glowing effect */
-        .glowing-button {
-            background: linear-gradient(to right, #A855F7, #6366F1);
-            box-shadow: 0 0 10px 5px rgba(168, 85, 247, 0.5);
-            transition: box-shadow 0.3s ease;
-            margin-top: 50px;
-        }
-
-        .glowing-button:hover {
-            box-shadow: 0 0 15px 7px rgba(168, 85, 247, 0.7);
-        }
-
-        /* Abstract 3D Shapes (CSS placeholders - needs actual 3D rendering or images) */
-        .shape {
-            position: absolute;
-            opacity: 0.5;
-            /* Add more styling for shapes */
-        }
-        .main-container {
-            width: 90%; /* Adjust the width to match the image */
-            max-width: 1200px; /* Limit the maximum width */
-            margin: 0 auto; /* Center the container */
-        }
-         .nav-items a {
-            font-size: 0.9rem; /* Reduced font size */
-            padding: 0.5rem 1rem; /* Reduced padding */
-            transition: color 0.3s ease; /* Smooth transition */
-            color: #ffffff;
-            margin-top: 100px;
-        }
-
-        .nav-items a:hover {
-            color: #ffffff; /* Hover color */
-        }
-
-        .nav-items .sign-up-button {
-            background-color: rgba(255, 255, 255, 0.5); /* Glassmorphism-like background */
-            border-radius: 20px; /* Rounded corners */
-            padding: 0.5rem 1rem; /* Padding */
-            color: #ffffff; /* Text color */
-            font-weight: bold; /* Bold text */
-            transition: background-color 0.3s ease; /* Transition effect */
-             color: #ffffff;
-        }
-
-        .nav-items .sign-up-button:hover {
-            background-color: rgba(255, 255, 255, 0.7); /* Darker background on hover */
-        }
-          .greeting-text {
-        text-align: center; /* Center the text */
-        width: 100%; /* Make sure it spans the whole width */
-        margin-top: 12px; /* Add some top margin */
-        font-size: 1.25rem; /* 20px */
-        line-height: 1.75rem; /* 28px */
-        color: #ffffff;
-    }
-    .main-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-top: 50px;
-        margin-right: 50px;
-    }
-
-    .quiz-description {
-        color: #ffffff; /* Adjust color to match the image */
-        margin-bottom: 2rem;
-        margin-top: 10px;
-    }
-      .topic-selection {
-        margin-top: 2rem;
-        width: 100%; /* Make sure it spans the whole width */
-        margin-top: 50px;
-    }
-
-    .topic-grid {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 columns */
-        gap: 1rem;
-        align-items: center;
-        padding-left: 15%;
-    }
-
-    .topic-button {
-        padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.2); /* Adjust background color */
-        border-radius: 0.75rem; /* 12px */
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        color: #ffffff;
-    }
-
-    .topic-button:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-      footer {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+        h1 {
             text-align: center;
-            color: #ffffff;
-            margin-top: auto; /* Push footer to the bottom */
+            color: #333;
         }
-        .vocablo-logo {
-            width: 50px; /* Adjust size as needed */
-            height: auto;
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
         }
-         header {
-        /* Ensure the header takes up the full width */
-        margin-bottom: 2rem; /* Add some margin below the header */
-    }
-</style>
+        .scores {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .definition {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .game-over {
+            text-align: center;
+        }
+        #join {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-start p-8">
-
-    <div class="main-container">
-        <!-- Header Navigation Bar -->
-          <header class="flex justify-between items-center w-full p-4">
-        <div class="flex items-center">
-
-            <h1 class="text-2xl font-bold">Vocablo</h1>
+<body>
+    <div class="container">
+        <h1>VocabMaster Battle</h1>
+        <div id="join">
+            <input type="text" id="playerId" placeholder="Enter your player ID" />
+            <button id="joinButton">Join Game</button>
         </div>
-        <nav class="nav-items">
-            <ul class="flex space-x-4">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Story</a></li>
-                <li><a href="#">Battle</a></li>
-                <li><a href="#">AboutUS</a></li>
-                <li><a href="#" class="sign-up-button">Sign Up</a></li>
-                <li><a href="#" class="sign-up-button">Sign In</a></li>
-            </ul>
-        </nav>
-    </header>
-
-        <!-- Main Content -->
-         <main class="main-content">
-        <h1 class="text-4xl font-bold">Level Up Your Vocabulary: Play, Learn, and Conquer Words!</h1>
-        <h2 class="quiz-description">Learn new words the fun way! Play challenges, take quizzes, and solve puzzles to expand your vocabulary effortlessly.</h2>
-
-        <!-- Call-to-Action Button -->
-        <button class="glowing-button text-white font-bold py-2 px-6 rounded-full focus:outline-none hover:bg-purple-700" 
-        onclick="window.location.href=''">
-    Get Started
-</button>
-
-        <!-- Greeting Text -->
-        <p class="greeting-text">Hello Learner! What topic are you interested in?</p>
-
-        <!-- Topic Selection Section -->
-        <div class="topic-selection">
-            <div class="topic-grid">
-                <div class="topic-button" onclick="window.location.href='challange.html'">
-                    Challenge
-                </div>
-                <div class="topic-button"  onclick="window.location.href='puzzle.html'">
-                    Puzzle
-                </div>
-                 <div class="topic-button"   onclick="window.location.href='QuizePage.html'">
-                    Quiz
-                </div>
-                <div class="topic-button">
-
-                     Daily Battle
-                </div>
-            </div>
-        </div>
-    </main>
+        <div id="game-container"></div>
     </div>
-    <footer class="bg-white-100 text-center text-gray-700 p-4">
-        &copy; 2025 Vocablo. All rights reserved.
-    </footer>
 
+    <script>
+       const socket = io(); // Initialize Socket.IO connection
+
+const dummyWords = [
+    { word: 'Ephemeral', definition: 'Lasting for a very short time' },
+    { word: 'Ubiquitous', definition: 'Present, appearing, or found everywhere' },
+    { word: 'Eloquent', definition: 'Fluent or persuasive in speaking or writing' },
+    { word: 'Pragmatic', definition: 'Dealing with things sensibly and realistically' },
+    { word: 'Serendipity', definition: 'The occurrence and development of events by chance in a happy or beneficial way' },
+];
+
+class BattleGame {
+    constructor(playerId) {
+        this.round = 1;
+        this.playerScore = 0;
+        this.opponentScore = 0; // Default opponent score is 0
+        this.currentWord = dummyWords[0];
+        this.timeLeft = 30;
+        this.gameOver = false;
+        this.gameContainer = document.getElementById('game-container');
+        this.timer = null;
+        this.playerId = playerId; // Store player ID
+        this.opponentId = null; // Track opponent ID
+    }
+
+    start() {
+        socket.emit('joinGame', this.playerId); // Notify server that the player has joined
+        this.render();
+        this.startTimer();
+    }
+
+    render() {
+        if (this.gameOver) {
+            this.gameContainer.innerHTML = `
+                <div class="game-over">
+                    <h2>Game Over!</h2>
+                    <p>Your Score: ${this.playerScore}</p>
+                    <p>Opponent's Score: ${this.opponentScore}</p>
+                    <p><strong>${this.getGameResult()}</strong></p>
+                    <button onclick="startNewGame()">Play Again</button>
+                </div>
+            `;
+        } else {
+            const previousAnswer = document.getElementById('player-answer')?.value || '';
+
+            this.gameContainer.innerHTML = `
+                <div class="game-info">
+                    <div>Round: ${this.round}/5</div>
+                    <div>Time Left: ${this.timeLeft}s</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${this.playerScore}</div>
+                    <div>Opponent's Score: ${this.opponentScore}</div>
+                </div>
+                <p class="definition">Definition: ${this.currentWord.definition}</p>
+                <input type="text" id="player-answer" placeholder="Enter the word" required>
+                <button id="submitAnswer">Submit</button>
+            `;
+
+            setTimeout(() => {
+                const inputField = document.getElementById('player-answer');
+                inputField.value = previousAnswer;
+                inputField.focus();
+            }, 50);
+
+            document.getElementById('submitAnswer').addEventListener('click', () => this.submitAnswer());
+        }
+    }
+
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.timeLeft--;
+            if (this.timeLeft <= 0) {
+                this.nextRound();
+            }
+            this.render();
+        }, 1000);
+    }
+
+    submitAnswer() {
+        const playerAnswer = document.getElementById('player-answer').value.trim();
+        if (playerAnswer.toLowerCase() === this.currentWord.word.toLowerCase()) {
+            this.playerScore += 10;
+        }
+
+        socket.emit('submitAnswer', { playerId: this.playerId, answer: playerAnswer });
+
+        this.nextRound();
+    }
+
+    nextRound() {
+        clearInterval(this.timer);
+
+        this.round++;
+        if (this.round > 5) {
+            this.gameOver = true;
+            this.render();
+        } else {
+            this.currentWord = dummyWords[this.round - 1];
+            this.timeLeft = 30;
+            this.render();
+            this.startTimer();
+        }
+    }
+
+    getGameResult() {
+        if (this.playerScore > this.opponentScore) {
+            return 'You Win!';
+        } else if (this.playerScore < this.opponentScore) {
+            return 'You Lose!';
+        } else {
+            return 'It\'s a Tie!';
+        }
+    }
+}
+
+// Start a new game
+function startNewGame() {
+    const playerId = document.getElementById('playerId').value.trim();
+    if (playerId) {
+        game = new BattleGame(playerId);
+        game.start();
+        document.getElementById('join').style.display = 'none';
+    } else {
+        alert("Please enter a valid player ID.");
+    }
+}
+
+// Start game when the page loads
+window.onload = () => {
+    document.getElementById('joinButton').addEventListener('click', startNewGame);
+};
+
+// 🔥 Live opponent score updates
+socket.on('updateScores', (data) => {
+    if (data.opponentId === game.opponentId) {
+        game.opponentScore = data.opponentScore;
+        game.render();
+    }
+});
+
+// Server events to sync words and scores
+socket.on('startGame', (data) => {
+    game.opponentId = data.opponentId || null;
+    game.currentWord = data.word;
+    game.render();
+});
+
+socket.on('nextRound', (data) => {
+    game.currentWord = data.word;
+    game.render();
+});
+
+socket.on('gameOver', (data) => {
+    game.playerScore = data.scores[game.playerId] || 0;
+    game.opponentScore = data.scores[data.opponentId] || 0;
+    game.gameOver = true;
+    game.render();
+});
+
+
+    </script>
 </body>
 </html>
