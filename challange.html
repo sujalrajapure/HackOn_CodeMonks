@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px; /* Increased width for more content */
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .scores {
+            margin-bottom: 1rem;
+            text-align: center; /* Center the score */
+        }
+        .challenge-type {
+            font-style: italic;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column; /* Stack options vertically */
+            margin-bottom: 1rem;
+        }
+        .options button {
+            width: 100%;
+            padding: 0.75rem; /* Increased padding */
+            margin-bottom: 0.5rem;
+            background-color: #eee; /* Lighter background */
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: left; /* Align text to the left */
+        }
+        .options button:hover {
+            background-color: #ddd;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .game-over {
+            text-align: center;
+        }
+        #challenge-selection {
+            margin-bottom: 20px;
+        }
+
+        #challenge-selection button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 0.5rem 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #challenge-selection button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Feedback Styles */
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .feedback {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vocabulary Challenge</h1>
+
+        <div id="challenge-selection">
+            <!-- Example Challenge Categories -->
+            <button onclick="loadChallenge('synonym')">Synonyms</button>
+            <button onclick="loadChallenge('antonym')">Antonyms</button>
+            <button onclick="loadChallenge('definition')">Definitions</button>
+            <button onclick="loadChallenge('sentence')">Sentence Completion</button>
+        </div>
+
+        <div id="game-container">
+            <!-- Challenge content will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Dummy Challenge Data (Replace with real data from your backend)
+        const challenges = {
+            synonym: [
+                {
+                    type: 'synonym',
+                    question: 'Which word is a synonym for "happy"?',
+                    options: ['Sad', 'Joyful', 'Angry', 'Tired'],
+                    correctAnswer: 'Joyful'
+                },
+                {
+        type: 'synonym',
+        question: 'Which word is a synonym for "fast"?',
+        options: ['Slow', 'Quick', 'Lazy', 'Dull'],
+        correctAnswer: 'Quick'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "brave"?',
+        options: ['Cowardly', 'Fearless', 'Timid', 'Weak'],
+        correctAnswer: 'Fearless'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "happy"?',
+        options: ['Sad', 'Joyful', 'Angry', 'Tired'],
+        correctAnswer: 'Joyful'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "intelligent"?',
+        options: ['Foolish', 'Clever', 'Weak', 'Lazy'],
+        correctAnswer: 'Clever'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "beautiful"?',
+        options: ['Ugly', 'Gorgeous', 'Dull', 'Plain'],
+        correctAnswer: 'Gorgeous'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "quick"?',
+        options: ['Slow', 'Fast', 'Boring', 'Calm'],
+        correctAnswer: 'Fast'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "brave"?',
+        options: ['Fearless', 'Cowardly', 'Timid', 'Nervous'],
+        correctAnswer: 'Fearless'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "ancient"?',
+        options: ['Old', 'New', 'Modern', 'Recent'],
+        correctAnswer: 'Old'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "angry"?',
+        options: ['Happy', 'Furious', 'Calm', 'Sleepy'],
+        correctAnswer: 'Furious'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "wealthy"?',
+        options: ['Poor', 'Rich', 'Cheap', 'Lazy'],
+        correctAnswer: 'Rich'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "fragile"?',
+        options: ['Strong', 'Delicate', 'Heavy', 'Tough'],
+        correctAnswer: 'Delicate'
+    },
+    {
+        type: 'synonym',
+        question: 'Which word is a synonym for "cheerful"?',
+        options: ['Gloomy', 'Happy', 'Moody', 'Tired'],
+        correctAnswer: 'Happy'
+    },
+                // ... more synonym questions
+            ],
+            antonym: [
+                {
+                    type: 'antonym',
+                    question: 'Which word is an antonym for "brave"?',
+                    options: ['Cowardly', 'Bold', 'Fearless', 'Heroic'],
+                    correctAnswer: 'Cowardly'
+                },
+                {
+        type: 'antonym',
+        question: 'Which word is an antonym for "generous"?',
+        options: ['Selfish', 'Kind', 'Helpful', 'Giving'],
+        correctAnswer: 'Selfish'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "ancient"?',
+        options: ['Old', 'Historical', 'Modern', 'Classic'],
+        correctAnswer: 'Modern'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "difficult"?',
+        options: ['Easy', 'Hard', 'Challenging', 'Tricky'],
+        correctAnswer: 'Easy'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "strong"?',
+        options: ['Weak', 'Powerful', 'Mighty', 'Resilient'],
+        correctAnswer: 'Weak'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "light"?',
+        options: ['Bright', 'Heavy', 'Shiny', 'Glowing'],
+        correctAnswer: 'Heavy'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "expand"?',
+        options: ['Grow', 'Shrink', 'Increase', 'Stretch'],
+        correctAnswer: 'Shrink'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "success"?',
+        options: ['Failure', 'Victory', 'Achievement', 'Triumph'],
+        correctAnswer: 'Failure'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "joyful"?',
+        options: ['Sad', 'Excited', 'Angry', 'Cheerful'],
+        correctAnswer: 'Sad'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "polite"?',
+        options: ['Kind', 'Rude', 'Gentle', 'Respectful'],
+        correctAnswer: 'Rude'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "increase"?',
+        options: ['Decrease', 'Expand', 'Multiply', 'Grow'],
+        correctAnswer: 'Decrease'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "hot"?',
+        options: ['Cold', 'Warm', 'Boiling', 'Steamy'],
+        correctAnswer: 'Cold'
+    },
+    {
+        type: 'antonym',
+        question: 'Which word is an antonym for "truthful"?',
+        options: ['Honest', 'Lying', 'Sincere', 'Trustworthy'],
+        correctAnswer: 'Lying'
+    },
+                // ... more antonym questions
+            ],
+            definition: [
+                {
+                    type: 'definition',
+                    question: 'What does the word "ubiquitous" mean?',
+                    options: ['Rare', 'Common', 'Hidden', 'Secret'],
+                    correctAnswer: 'Common'
+                },
+                
+    {
+        type: 'definition',
+        question: 'What is the meaning of the word "ephemeral"?',
+        options: ['Lasting a short time', 'Very large', 'Difficult to understand', 'Full of energy'],
+        correctAnswer: 'Lasting a short time'
+    },
+    {
+        type: 'definition',
+        question: 'What does "meticulous" mean?',
+        options: ['Careful and precise', 'Careless', 'Fast and reckless', 'Lacking confidence'],
+        correctAnswer: 'Careful and precise'
+    },
+    {
+        type: 'definition',
+        question: 'What is the definition of "ubiquitous"?',
+        options: ['Existing everywhere', 'Rare and unique', 'Difficult to find', 'Outdated'],
+        correctAnswer: 'Existing everywhere'
+    },
+    {
+        type: 'definition',
+        question: 'What does "eloquent" mean?',
+        options: ['Able to express ideas clearly', 'Weak and ineffective', 'Hard to understand', 'Lacking confidence'],
+        correctAnswer: 'Able to express ideas clearly'
+    },
+    {
+        type: 'definition',
+        question: 'What is the meaning of "tenacious"?',
+        options: ['Determined and persistent', 'Easily discouraged', 'Lazy', 'Unmotivated'],
+        correctAnswer: 'Determined and persistent'
+    },
+    {
+        type: 'definition',
+        question: 'What does "pensive" mean?',
+        options: ['Deep in thought', 'Happy and excited', 'Confused', 'Carefree'],
+        correctAnswer: 'Deep in thought'
+    },
+                
+            ],
+             sentence: [
+                {
+                    type: 'sentence',
+                    question: 'Choose the word that best completes the sentence: The ____ dog barked loudly.',
+                    options: ['Quiet', 'Fierce', 'Gentle', 'Timid'],
+                    correctAnswer: 'Fierce'
+                },
+                {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "The scientist made an ____ discovery."',
+        options: ['Ordinary', 'Accidental', 'Incredible', 'Boring'],
+        correctAnswer: 'Incredible'
+    },
+    {
+        type: 'sentence-completion',
+        question: 'Choose the correct word: "She was ____ after receiving the good news."',
+        options: ['Elated', 'Depressed', 'Angry', 'Confused'],
+        correctAnswer: 'Elated'
+    },
+
+                
+
+                
+           
+            ]
+            
+        };
+
+        let currentChallengeType = null;
+        let currentQuestionIndex = 0;
+        let playerScore = 0;
+        let challengeStarted = false; //Track if user pressed button to start challange
+
+
+        const gameContainer = document.getElementById('game-container');
+
+        function loadChallenge(type) {
+            currentChallengeType = type;
+            currentQuestionIndex = 0;
+            playerScore = 0;
+            challengeStarted = true;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if (!challengeStarted) {
+                gameContainer.innerHTML = "<p>Select a challange type to begin!</p>";
+                return;
+            }
+
+            if (!currentChallengeType) {
+                gameContainer.innerHTML = "<p>Please select a challenge type.</p>";
+                return;
+            }
+
+            const challenge = challenges[currentChallengeType];
+
+            if (!challenge || currentQuestionIndex >= challenge.length) {
+                // Challenge Over
+                gameContainer.innerHTML = `
+                    <div class="game-over">
+                        <h2>Challenge Complete!</h2>
+                        <p>Your Score: ${playerScore} / ${challenge.length}</p>
+                        <button onclick="loadChallenge(currentChallengeType)">Play Again</button>
+                         <button onclick="loadChallengeSelection()">Back to Challenge Selection</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const questionData = challenge[currentQuestionIndex];
+
+            let questionHTML = `
+                <div class="game-info">
+                    <div>Challenge: ${currentChallengeType}</div>
+                    <div>Question: ${currentQuestionIndex + 1} / ${challenge.length}</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${playerScore}</div>
+                </div>
+                <p class="challenge-type">${questionData.type.toUpperCase()} CHALLENGE</p>
+                <p class="question">${questionData.question}</p>
+            `;
+
+            if (questionData.options) {
+                questionHTML += `<div class="options">`;
+                questionData.options.forEach(option => {
+                    questionHTML += `<button onclick="checkAnswer('${option}')">${option}</button>`;
+                });
+                questionHTML += `</div>`;
+            } else {
+                // Text input for answers (e.g., for fill-in-the-blank)
+                questionHTML += `<input type="text" id="player-answer" placeholder="Enter your answer">
+                                 <button onclick="checkTextInputAnswer()">Submit</button>`;
+            }
+
+            gameContainer.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(answer) {
+            const challenge = challenges[currentChallengeType];
+            const questionData = challenge[currentQuestionIndex];
+
+            if (answer === questionData.correctAnswer) {
+                playerScore++;
+                showFeedback(true);
+            } else {
+                showFeedback(false, questionData.correctAnswer);
+            }
+
+            //Move to the next question after showing feedback (delay for better UX)
+            setTimeout(() => {
+               currentQuestionIndex++;
+               renderQuestion();
+            }, 1500);
+
+
+        }
+
+         function checkTextInputAnswer() {
+            const playerAnswer = document.getElementById('player-answer').value.trim();
+            const challenge = challenges[currentChallengeType];
+            const questionData = challenge[currentQuestionIndex];
+
+            if (playerAnswer.toLowerCase() === questionData.correctAnswer.toLowerCase()) {
+                playerScore++;
+               showFeedback(true);
+            } else {
+               showFeedback(false, questionData.correctAnswer);
+            }
+
+             setTimeout(() => {
+               currentQuestionIndex++;
+               renderQuestion();
+            }, 1500);
+        }
+
+
+        function showFeedback(isCorrect, correctAnswer = null) {
+            let feedbackHTML = "";
+            if (isCorrect) {
+                feedbackHTML = `<div class="correct">Correct!</div>`;
+            } else {
+                feedbackHTML = `<div class="incorrect">Incorrect! The correct answer was: ${correctAnswer}</div>
+                                 <p class="feedback">Keep practicing!</p>`;
+            }
+            gameContainer.innerHTML = feedbackHTML + gameContainer.innerHTML; //Prepend feedback
+        }
+
+        function loadChallengeSelection(){
+            challengeStarted = false;
+            gameContainer.innerHTML = "";
+            renderQuestion();
+
+        }
+
+
+        // Initial load (show challenge selection)
+         window.onload = () => {
+           renderQuestion();
+        };
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocabMaster Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Use min-height to ensure full viewport coverage */
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Increased max-width to accommodate more content */
+            width: 100%;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        /* Navigation styles */
+        #activity-selection {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        #activity-selection button {
+            padding: 1rem 2rem;
+            margin: 0 1rem;
+            font-size: 1.1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #activity-selection button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Content area styles */
+        #content-area {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+        }
+
+        /* Hide individual activity sections by default */
+        #challenge-section,
+        #quiz-section,
+        #puzzle-section {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        /* General button styling for challenges, quizzes, and puzzles */
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        /* Text input styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding and border are included in the element's width */
+        }
+
+        /* Feedback styling for correct and incorrect answers */
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        /* Styling for messages, e.g., "Select an activity" */
+        .message {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>VocabMaster Hub</h1>
+
+        <!-- Activity Selection -->
+        <div id="activity-selection">
+            <button onclick="showSection('challenge')">Challenges</button>
+            <button onclick="showSection('quiz')">Quizzes</button>
+            <button onclick="showSection('puzzle')">Puzzles</button>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content-area">
+            <p class="message">Select an activity above to begin!</p>
+
+            <!-- Challenge Section (Initially Hidden) -->
+            <div id="challenge-section">
+                <h2>Vocabulary Challenges</h2>
+                <!-- Add Challenge selection -->
+                <div id="challenge-selection">
+                    <!-- Example Challenge Categories -->
+                    <button onclick="loadChallenge('synonym')">Synonyms</button>
+                    <button onclick="loadChallenge('antonym')">Antonyms</button>
+                    <button onclick="loadChallenge('definition')">Definitions</button>
+                    <button onclick="loadChallenge('sentence')">Sentence Completion</button>
+                </div>
+                <div id="challenge-game-container">
+
+                </div>
+
+            </div>
+
+            <!-- Quiz Section (Initially Hidden) -->
+            <div id="quiz-section">
+                <h2>Vocabulary Quizzes</h2>
+               <!-- Add Quiz selection -->
+                <div id="quiz-selection">
+                    <!-- Example Quiz Categories -->
+                    <button onclick="loadQuiz('general')">General</button>
+                    <button onclick="loadQuiz('science')">Science</button>
+                    <button onclick="loadQuiz('literature')">Literature</button>
+
+                </div>
+                <div id="quiz-game-container">
+
+                </div>
+            </div>
+
+            <!-- Puzzle Section (Initially Hidden) -->
+            <div id="puzzle-section">
+                <h2>Vocabulary Puzzles</h2>
+                <!-- Puzzle Type Selection -->
+                <div id="puzzle-selection">
+                    <!-- Puzzle Type Selection -->
+                    <button onclick="loadPuzzle('anagram')">Anagram</button>
+                    <button onclick="loadPuzzle('definition')">Definition Guess</button>
+                    <!-- Add more puzzle types here (crossword, word search, etc.) -->
+                </div>
+                <div id="puzzle-game-container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show a section and hide the others
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('challenge-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('puzzle-section').style.display = 'none';
+
+            // Show the selected section
+            document.getElementById(sectionId + '-section').style.display = 'block';
+        }
+        // ------------------------ CHALANGE SECTION ----------------------
+        // Dummy Challenge Data (Replace with real data from your backend)
+        const challenges = {
+            synonym: [
+                {
+                    type: 'synonym',
+                    question: 'Which word is a synonym for "happy"?',
+                    options: ['Sad', 'Joyful', 'Angry', 'Tired'],
+                    correctAnswer: 'Joyful'
+                },
+                // ... more synonym questions
+            ],
+            antonym: [
+                {
+                    type: 'antonym',
+                    question: 'Which word is an antonym for "brave"?',
+                    options: ['Cowardly', 'Bold', 'Fearless', 'Heroic'],
+                    correctAnswer: 'Cowardly'
+                },
+                // ... more antonym questions
+            ],
+            definition: [
+                {
+                    type: 'definition',
+                    question: 'What does the word "ubiquitous" mean?',
+                    options: ['Rare', 'Common', 'Hidden', 'Secret'],
+                    correctAnswer: 'Common'
+                }
+            ],
+             sentence: [
+                {
+                    type: 'sentence',
+                    question: 'Choose the word that best completes the sentence: The ____ dog barked loudly.',
+                    options: ['Quiet', 'Fierce', 'Gentle', 'Timid'],
+                    correctAnswer: 'Fierce'
+                }
+            ]
+        };
+
+        let currentChallengeType = null;
+        let currentQuestionIndex = 0;
+        let playerScore = 0;
+        let challengeStarted = false; //Track if user pressed button to start challange
+
+
+        const challengeGameContainer = document.getElementById('challenge-game-container');
+
+        function loadChallenge(type) {
+            currentChallengeType = type;
+            currentQuestionIndex = 0;
+            playerScore = 0;
+            challengeStarted = true;
+            renderChallengeQuestion();
+        }
+
+        function renderChallengeQuestion() {
+            if (!challengeStarted) {
+                 challengeGameContainer.innerHTML = "<p>Select a challenge type to begin!</p>";
+                return;
+            }
+
+            if (!currentChallengeType) {
+                challengeGameContainer.innerHTML = "<p>Please select a challenge type.</p>";
+                return;
+            }
+
+            const challenge = challenges[currentChallengeType];
+
+            if (!challenge || currentQuestionIndex >= challenge.length) {
+                // Challenge Over
+                 challengeGameContainer.innerHTML = `
+                    <div class="game-over">
+                        <h2>Challenge Complete!</h2>
+                        <p>Your Score: ${playerScore} / ${challenge.length}</p>
+                        <button onclick="loadChallenge(currentChallengeType)">Play Again</button>
+                         <button onclick="loadChallengeSelection()">Back to Challenge Selection</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const questionData = challenge[currentQuestionIndex];
+
+            let questionHTML = `
+                <div class="game-info">
+                    <div>Challenge: ${currentChallengeType}</div>
+                    <div>Question: ${currentQuestionIndex + 1} / ${challenge.length}</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${playerScore}</div>
+                </div>
+                <p class="challenge-type">${questionData.type.toUpperCase()} CHALLENGE</p>
+                <p class="question">${questionData.question}</p>
+            `;
+
+            if (questionData.options) {
+                questionHTML += `<div class="options">`;
+                questionData.options.forEach(option => {
+                    questionHTML += `<button onclick="checkChallengeAnswer('${option}')">${option}</button>`;
+                });
+                questionHTML += `</div>`;
+            } else {
+                // Text input for answers (e.g., for fill-in-the-blank)
+                questionHTML += `<input type="text" id="player-answer" placeholder="Enter your answer">
+                                 <button onclick="checkTextInputAnswer()">Submit</button>`;
+            }
+
+             challengeGameContainer.innerHTML = questionHTML;
+        }
+
+        function checkChallengeAnswer(answer) {
+            const challenge = challenges[currentChallengeType];
+            const questionData = challenge[currentQuestionIndex];
+
+            if (answer === questionData.correctAnswer) {
+                playerScore++;
+                showChallengeFeedback(true);
+            } else {
+                showChallengeFeedback(false, questionData.correctAnswer);
+            }
+
+            //Move to the next question after showing feedback (delay for better UX)
+            setTimeout(() => {
+               currentQuestionIndex++;
+               renderChallengeQuestion();
+            }, 1500);
+
+
+        }
+
+         function checkTextInputAnswer() {
+            const playerAnswer = document.getElementById('player-answer').value.trim();
+            const challenge = challenges[currentChallengeType];
+            const questionData = challenge[currentQuestionIndex];
+
+            if (playerAnswer.toLowerCase() === questionData.correctAnswer.toLowerCase()) {
+                playerScore++;
+               showChallengeFeedback(true);
+            } else {
+               showChallengeFeedback(false, questionData.correctAnswer);
+            }
+
+             setTimeout(() => {
+               currentQuestionIndex++;
+               renderChallengeQuestion();
+            }, 1500);
+        }
+
+
+        function showChallengeFeedback(isCorrect, correctAnswer = null) {
+            let feedbackHTML = "";
+            if (isCorrect) {
+                feedbackHTML = `<div class="correct">Correct!</div>`;
+            } else {
+                feedbackHTML = `<div class="incorrect">Incorrect! The correct answer was: ${correctAnswer}</div>
+                                 <p class="feedback">Keep practicing!</p>`;
+            }
+             challengeGameContainer.innerHTML = feedbackHTML +  challengeGameContainer.innerHTML; //Prepend feedback
+        }
+
+        function loadChallengeSelection(){
+            challengeStarted = false;
+            challengeGameContainer.innerHTML = "";
+            renderChallengeQuestion();
+
+        }
+
+        // ------------------------ QUIZ SECTION ----------------------
+        // Dummy Quiz Data (Replace with real data from your backend)
+        const quizzes = {
+            general: [
+                {
+                    type: 'quiz',
+                    question: 'What is the opposite of "benevolent"?',
+                    options: ['Kind', 'Malevolent', 'Generous', 'Helpful'],
+                    correctAnswer: 'Malevolent'
+                },
+                // ... more general quiz questions
+            ],
+            science: [
+                {
+                    type: 'quiz',
+                    question: 'What is the term for the study of living organisms?',
+                    options: ['Biology', 'Chemistry', 'Physics', 'Geology'],
+                    correctAnswer: 'Biology'
+                }
+                // ... more science quiz questions
+            ],
+            literature: [
+                {
+                    type: 'quiz',
+                    question: 'Who wrote "Pride and Prejudice"?',
+                    options: ['Charles Dickens', 'Jane Austen', 'Emily Bronte', 'William Shakespeare'],
+                    correctAnswer: 'Jane Austen'
+                }
+            ]
+        };
+
+        let currentQuizType = null;
+        let currentQuizQuestionIndex = 0;
+        let quizPlayerScore = 0;
+        let quizStarted = false;
+
+        const quizGameContainer = document.getElementById('quiz-game-container');
+
+        function loadQuiz(type) {
+            currentQuizType = type;
+            currentQuizQuestionIndex = 0;
+            quizPlayerScore = 0;
+            quizStarted = true;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            if (!quizStarted) {
+                quizGameContainer.innerHTML = "<p>Select a quiz type to begin!</p>";
+                return;
+            }
+
+            if (!currentQuizType) {
+                quizGameContainer.innerHTML = "<p>Please select a quiz type.</p>";
+                return;
+            }
+
+            const quiz = quizzes[currentQuizType];
+
+            if (!quiz || currentQuizQuestionIndex >= quiz.length) {
+                // Quiz Over
+                quizGameContainer.innerHTML = `
+                    <div class="game-over">
+                        <h2>Quiz Complete!</h2>
+                        <p>Your Score: ${quizPlayerScore} / ${quiz.length}</p>
+                        <button onclick="loadQuiz(currentQuizType)">Play Again</button>
+                        <button onclick="loadQuizSelection()">Back to Quiz Selection</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const questionData = quiz[currentQuizQuestionIndex];
+
+            let questionHTML = `
+                <div class="game-info">
+                    <div>Quiz: ${currentQuizType}</div>
+                    <div>Question: ${currentQuizQuestionIndex + 1} / ${quiz.length}</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${quizPlayerScore}</div>
+                </div>
+                <p class="quiz-type">${questionData.type.toUpperCase()} QUIZ</p>
+                <p class="question">${questionData.question}</p>
+                <div class="options">
+            `;
+
+            questionData.options.forEach(option => {
+                questionHTML += `<button onclick="checkQuizAnswer('${option}')">${option}</button>`;
+            });
+
+            questionHTML += `</div>`;
+
+            quizGameContainer.innerHTML = questionHTML;
+        }
+
+        function checkQuizAnswer(answer) {
+            const quiz = quizzes[currentQuizType];
+            const questionData = quiz[currentQuizQuestionIndex];
+
+            if (answer === questionData.correctAnswer) {
+                quizPlayerScore++;
+                showQuizFeedback(true);
+            } else {
+                showQuizFeedback(false, questionData.correctAnswer);
+            }
+
+            setTimeout(() => {
+                currentQuizQuestionIndex++;
+                renderQuizQuestion();
+            }, 1500);
+        }
+
+        function showQuizFeedback(isCorrect, correctAnswer = null) {
+            let feedbackHTML = "";
+            if (isCorrect) {
+                feedbackHTML = `<div class="correct">Correct!</div>`;
+            } else {
+                feedbackHTML = `<div class="incorrect">Incorrect! The correct answer was: ${correctAnswer}</div>
+                                 <p class="feedback">Keep practicing!</p>`;
+            }
+            quizGameContainer.innerHTML = feedbackHTML + quizGameContainer.innerHTML;
+        }
+
+        function loadQuizSelection() {
+            quizStarted = false;
+            quizGameContainer.innerHTML = "";
+            renderQuizQuestion();
+        }
+
+        // ------------------------ PUZZLE SECTION ----------------------
+        // Dummy Puzzle Data (Replace with real data from your backend)
+        const puzzles = {
+            anagram: [
+                {
+                    type: 'anagram',
+                    scrambledWord: 'TEPATO',
+                    correctAnswer: 'POTATO',
+                    hint: 'A common vegetable'
+                },
+                {
+                    type: 'anagram',
+                    scrambledWord: 'SILNE',
+                    correctAnswer: 'LINES',
+                    hint: 'A series of connected points'
+                }
+                // ... more anagram puzzles
+            ],
+            definition: [
+                {
+                    type: 'definition',
+                    definitionText: 'A state of perfect happiness or joy',
+                    correctAnswer: 'bliss',
+                    hint: 'Starts with B'
+                },
+                 {
+                    type: 'definition',
+                    definitionText: 'Extremely evil or cruel; outrageous',
+                    correctAnswer: 'atrocious',
+                    hint: 'Starts with A'
+                }
+                // ... more definition puzzles
+            ]
+            // ... more puzzle types and data
+        };
+
+        let currentPuzzleType = null;
+        let currentPuzzleIndex = 0;
+        let puzzlePlayerScore = 0;
+        let puzzleStarted = false;
+
+        const puzzleGameContainer = document.getElementById('puzzle-game-container');
+
+        function loadPuzzle(type) {
+            currentPuzzleType = type;
+            currentPuzzleIndex = 0;
+            puzzlePlayerScore = 0;
+            puzzleStarted = true;
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            if (!puzzleStarted) {
+                 puzzleGameContainer.innerHTML = "<p>Select a puzzle type to begin!</p>";
+                return;
+            }
+
+            if (!currentPuzzleType) {
+                puzzleGameContainer.innerHTML = "<p>Please select a puzzle type.</p>";
+                return;
+            }
+
+            const puzzleSet = puzzles[currentPuzzleType];
+
+            if (!puzzleSet || currentPuzzleIndex >= puzzleSet.length) {
+                // Puzzles Over
+                 puzzleGameContainer.innerHTML = `
+                    <div class="game-over">
+                        <h2>Puzzles Complete!</h2>
+                        <p>Your Score: ${puzzlePlayerScore} / ${puzzleSet.length}</p>
+                        <button onclick="loadPuzzle(currentPuzzleType)">Play Again</button>
+                        <button onclick="loadPuzzleSelection()">Back to Puzzle Selection</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const puzzleData = puzzleSet[currentPuzzleIndex];
+
+            let puzzleHTML = `
+                <div class="game-info">
+                    <div>Puzzle: ${currentPuzzleType}</div>
+                    <div>Puzzle: ${currentPuzzleIndex + 1} / ${puzzleSet.length}</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${puzzlePlayerScore}</div>
+                </div>
+            `;
+
+            if (puzzleData.type === 'anagram') {
+                puzzleHTML += `
+                    <div class="puzzle-container">
+                        <p class="anagram">Unscramble: ${puzzleData.scrambledWord}</p>
+                        <p>Hint: ${puzzleData.hint}</p>
+                        <input type="text" id="player-answer" placeholder="Enter the word">
+                        <button onclick="checkPuzzleAnswer('${puzzleData.correctAnswer}', 'text')">Submit</button>
+                    </div>
+                `;
+            } else if (puzzleData.type === 'definition') {
+                puzzleHTML += `
+                    <div class="puzzle-container">
+                        <p class="definition">Definition: ${puzzleData.definitionText}</p>
+                        <p>Hint: ${puzzleData.hint}</p>
+                        <input type="text" id="player-answer" placeholder="Enter the word">
+                        <button onclick="checkPuzzleAnswer('${puzzleData.correctAnswer}', 'text')">Submit</button>
+                    </div>
+                `;
+            }
+
+            // Add more puzzle types here (crossword, word search, etc.)
+
+             puzzleGameContainer.innerHTML = puzzleHTML;
+        }
+
+        function checkPuzzleAnswer(correctAnswer, inputType) {
+            let playerAnswer = "";
+            if (inputType === 'text') {
+                playerAnswer = document.getElementById('player-answer').value.trim();
+            } else {
+                // Handle other input types (e.g., for multiple-choice)
+            }
+
+            if (playerAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                puzzlePlayerScore++;
+                showPuzzleFeedback(true);
+            } else {
+                showPuzzleFeedback(false, correctAnswer);
+            }
+
+            setTimeout(() => {
+                currentPuzzleIndex++;
+                renderPuzzle();
+            }, 1500);
+        }
+
+        function showPuzzleFeedback(isCorrect, correctAnswer = null) {
+            let feedbackHTML = "";
+            if (isCorrect) {
+                feedbackHTML = `<div class="correct">Correct!</div>`;
+            } else {
+                feedbackHTML = `<div class="incorrect">Incorrect! The correct answer was: ${correctAnswer}</div>
+                                 <p class="feedback">Keep practicing!</p>`;
+            }
+             puzzleGameContainer.innerHTML = feedbackHTML +  puzzleGameContainer.innerHTML; // Prepend feedback
+        }
+
+        function loadPuzzleSelection() {
+            puzzleStarted = false;
+            puzzleGameContainer.innerHTML = "";
+            renderPuzzle();
+        }
+         // Initial load (show puzzle selection)
+        window.onload = () => {
+           renderChallengeQuestion();
+           renderQuizQuestion();
+           renderPuzzle();
+        };
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabulary Puzzles</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      .container {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 600px; /* Increased width for puzzle content */
+        width: 100%;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      .game-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .puzzle-container {
+        margin-bottom: 1rem;
+      }
+      /* Add styles for different puzzle types as needed */
+      .crossword-grid {
+        /* Style your crossword grid here */
+      }
+      .anagram {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .game-over {
+        text-align: center;
+      }
+      #puzzle-selection {
+        margin-bottom: 20px;
+      }
+
+      #puzzle-selection button {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 0.5rem 1rem;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #puzzle-selection button:hover {
+        background-color: #2980b9;
+      }
+
+      .correct {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+      }
+
+      .incorrect {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+      }
+
+      .feedback {
+        font-style: italic;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Vocabulary Puzzles</h1>
+
+      <div id="puzzle-selection">
+        <!-- Puzzle Type Selection -->
+        <button onclick="loadPuzzle('anagram')">Anagram</button>
+        <button onclick="loadPuzzle('definition')">Definition Guess</button>
+        <!-- Add more puzzle types here (crossword, word search, etc.) -->
+      </div>
+
+      <div id="game-container">
+        <!-- Puzzle content will be loaded here -->
+      </div>
+    </div>
+
+    <script>
+      // Dummy Puzzle Data (Replace with real data from your backend)
+      const puzzles = {
+        anagram: [
+          {
+            type: "anagram",
+            scrambledWord: "TEPATO",
+            correctAnswer: "POTATO",
+            hint: "A common vegetable",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "SILNE",
+            correctAnswer: "LINES",
+            hint: "A series of connected points",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "TEPATO",
+            correctAnswer: "POTATO",
+            hint: "A common vegetable",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "SILNE",
+            correctAnswer: "LINES",
+            hint: "A series of connected points",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "NAGREO",
+            correctAnswer: "ORANGE",
+            hint: "A citrus fruit",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "EARHT",
+            correctAnswer: "HEART",
+            hint: "A vital organ",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "YOHNEM",
+            correctAnswer: "MONEY",
+            hint: "Used to buy things",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "GNIRPS",
+            correctAnswer: "SPRING",
+            hint: "A season of the year",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "RACHS",
+            correctAnswer: "CRASH",
+            hint: "A sudden loud noise or impact",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "BIRAL",
+            correctAnswer: "BLAIR",
+            hint: "A common name",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "PHANTEL",
+            correctAnswer: "ELEPHANT",
+            hint: "A large animal with a trunk",
+          },
+          {
+            type: "anagram",
+            scrambledWord: "DRAOG",
+            correctAnswer: "GUARD",
+            hint: "Someone who protects",
+          },
+          // ... more anagram puzzles
+        ],
+        definition: [
+          {
+            type: "definition",
+            definitionText: "A state of perfect happiness or joy",
+            correctAnswer: "bliss",
+            hint: "Starts with B",
+          },
+          {
+            type: "definition",
+            definitionText: "Extremely evil or cruel; outrageous",
+            correctAnswer: "atrocious",
+            hint: "Starts with A",
+          },
+          {
+            type: "definition",
+            definitionText: "A feeling of great happiness and triumph",
+            correctAnswer: "elation",
+            hint: "Starts with E",
+          },
+          {
+            type: "definition",
+            definitionText: "A state of extreme happiness or delight",
+            correctAnswer: "ecstasy",
+            hint: "Starts with E",
+          },
+          {
+            type: "definition",
+            definitionText: "A state of deep joy and satisfaction",
+            correctAnswer: "euphoria",
+            hint: "Starts with E",
+          },
+          {
+            type: "definition",
+            definitionText: "A calm, peaceful, and untroubled state",
+            correctAnswer: "serenity",
+            hint: "Starts with S",
+          },
+          {
+            type: "definition",
+            definitionText: "A feeling of pleasure and satisfaction",
+            correctAnswer: "contentment",
+            hint: "Starts with C",
+          },
+          {
+            type: "definition",
+            definitionText: "An intense feeling of happiness and excitement",
+            correctAnswer: "rapture",
+            hint: "Starts with R",
+          },
+          {
+            type: "definition",
+            definitionText: "A feeling of great pleasure and joy",
+            correctAnswer: "delight",
+            hint: "Starts with D",
+          },
+          {
+            type: "definition",
+            definitionText:
+              "A feeling of happiness mixed with deep appreciation",
+            correctAnswer: "gratitude",
+            hint: "Starts with G",
+          },
+          {
+            type: "definition",
+            definitionText: "A feeling of being carefree and lighthearted",
+            correctAnswer: "glee",
+            hint: "Starts with G",
+          },
+          {
+            type: "definition",
+            definitionText: "A strong sense of excitement and enthusiasm",
+            correctAnswer: "exhilaration",
+            hint: "Starts with E",
+          },
+
+          // ... more definition puzzles
+        ],
+        // ... more puzzle types and data
+      };
+
+      let currentPuzzleType = null;
+      let currentPuzzleIndex = 0;
+      let playerScore = 0;
+      let puzzleStarted = false;
+
+      const gameContainer = document.getElementById("game-container");
+
+      function loadPuzzle(type) {
+        currentPuzzleType = type;
+        currentPuzzleIndex = 0;
+        playerScore = 0;
+        puzzleStarted = true;
+        renderPuzzle();
+      }
+
+      function renderPuzzle() {
+        if (!puzzleStarted) {
+          gameContainer.innerHTML = "<p>Select a puzzle type to begin!</p>";
+          return;
+        }
+
+        if (!currentPuzzleType) {
+          gameContainer.innerHTML = "<p>Please select a puzzle type.</p>";
+          return;
+        }
+
+        const puzzleSet = puzzles[currentPuzzleType];
+
+        if (!puzzleSet || currentPuzzleIndex >= puzzleSet.length) {
+          // Puzzles Over
+          gameContainer.innerHTML = `
+                    <div class="game-over">
+                        <h2>Puzzles Complete!</h2>
+                        <p>Your Score: ${playerScore} / ${puzzleSet.length}</p>
+                        <button onclick="loadPuzzle(currentPuzzleType)">Play Again</button>
+                        <button onclick="loadPuzzleSelection()">Back to Puzzle Selection</button>
+                    </div>
+                `;
+          return;
+        }
+
+        const puzzleData = puzzleSet[currentPuzzleIndex];
+
+        let puzzleHTML = `
+                <div class="game-info">
+                    <div>Puzzle: ${currentPuzzleType}</div>
+                    <div>Puzzle: ${currentPuzzleIndex + 1} / ${
+          puzzleSet.length
+        }</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${playerScore}</div>
+                </div>
+            `;
+
+        if (puzzleData.type === "anagram") {
+          puzzleHTML += `
+                    <div class="puzzle-container">
+                        <p class="anagram">Unscramble: ${puzzleData.scrambledWord}</p>
+                        <p>Hint: ${puzzleData.hint}</p>
+                        <input type="text" id="player-answer" placeholder="Enter the word">
+                        <button onclick="checkAnswer('${puzzleData.correctAnswer}', 'text')">Submit</button>
+                    </div>
+                `;
+        } else if (puzzleData.type === "definition") {
+          puzzleHTML += `
+                    <div class="puzzle-container">
+                        <p class="definition">Definition: ${puzzleData.definitionText}</p>
+                        <p>Hint: ${puzzleData.hint}</p>
+                        <input type="text" id="player-answer" placeholder="Enter the word">
+                        <button onclick="checkAnswer('${puzzleData.correctAnswer}', 'text')">Submit</button>
+                    </div>
+                `;
+        }
+
+        // Add more puzzle types here (crossword, word search, etc.)
+
+        gameContainer.innerHTML = puzzleHTML;
+      }
+
+      function checkAnswer(correctAnswer, inputType) {
+        let playerAnswer = "";
+        if (inputType === "text") {
+          playerAnswer = document.getElementById("player-answer").value.trim();
+        } else {
+          // Handle other input types (e.g., for multiple-choice)
+        }
+
+        if (playerAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+          playerScore++;
+          showFeedback(true);
+        } else {
+          showFeedback(false, correctAnswer);
+        }
+
+        setTimeout(() => {
+          currentPuzzleIndex++;
+          renderPuzzle();
+        }, 1500);
+      }
+
+      function showFeedback(isCorrect, correctAnswer = null) {
+        let feedbackHTML = "";
+        if (isCorrect) {
+          feedbackHTML = `<div class="correct">Correct!</div>`;
+        } else {
+          feedbackHTML = `<div class="incorrect">Incorrect! The correct answer was: ${correctAnswer}</div>
+                                 <p class="feedback">Keep practicing!</p>`;
+        }
+        gameContainer.innerHTML = feedbackHTML + gameContainer.innerHTML; // Prepend feedback
+      }
+
+      function loadPuzzleSelection() {
+        puzzleStarted = false;
+        gameContainer.innerHTML = "";
+        renderPuzzle();
+      }
+
+      // Initial load (show puzzle selection)
+      window.onload = () => {
+        renderPuzzle();
+      };
+    </script>
+  </body>
+</html>
