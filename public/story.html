@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocablo - Story</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #7c3aed, #6d28d9);
+            color: white;
+            padding: 2rem;
+        }
+
+        /* Navigation Styles */
+        nav {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sign-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .sign-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content Styles */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .story-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-content {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .continue-btn {
+            background-color: white;
+            color: #6d28d9;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">Vocablo</div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="window.location.href='index.html'">Home</button>
+            <button class="nav-btn" onclick="selectChallenge('index')">Story</button>
+            <button class="nav-btn" onclick="window.location.href='quizes.html'">Battle</button>
+            <button class="nav-btn">About Us</button>
+            <button class="nav-btn sign-btn" onclick="window.location.href='signup.html'">Sign Up</button>
+            <button class="nav-btn sign-btn" onclick="window.location.href='login.html'">Login</button>
+        </div>
+    </nav>
+
+    <main>
+        <h1 class="story-title">The Adventure of Vocabulary</h1>
+        <p class="story-content">
+            Once upon a time in a land filled with words, there lived a young adventurer named Lexi. Lexi loved exploring the vast forests of vocabulary, where every tree was a new word waiting to be discovered. One day, while wandering through the woods, Lexi stumbled upon a mysterious book that glowed with a magical light.
+        </p>
+        <p class="story-content">
+            As Lexi opened the book, words began to swirl around, forming sentences that told tales of bravery, friendship, and knowledge. Each page turned revealed a new challenge, a new word to learn, and a new adventure to embark upon. Lexi knew that this was not just a book; it was a gateway to mastering the art of language.
+        </p>
+        <p class="story-content">
+            Join Lexi on this journey to conquer words and unlock the secrets of vocabulary! Are you ready to turn the page and continue the adventure?
+        </p>
+        <button class="continue-btn" onclick="window.location.href='quizes.html'">Continue to Challenges</button>
+    </main>
+
+    <footer>
+        © 2025 Vocablo. All rights reserved.
+    </footer>
+</body>
+
+</html>

@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solve - Sign Up</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="bg-[#120a2e] text-white font-sans flex items-center justify-center min-h-screen">
     <!-- Signup Container -->
-    <div class="bg-[#1e1341] bg-opacity-60 p-8 rounded-xl shadow-lg w-full max-w-md text-center 
-                backdrop-blur-md border border-purple-500/30">
-        
+    <div class="bg-[#1e1341] bg-opacity-60 p-8 rounded-xl shadow-lg w-full max-w-md text-center backdrop-blur-md border border-purple-500/30">
+
         <!-- Logo & Title -->
         <h2 class="text-3xl font-bold mb-4">Create Your Account</h2>
         <p class="text-gray-300 mb-6">Sign up to get started</p>
         <!-- Form -->
-        <form action="#" class="space-y-4">
+        <form id="signupForm" class="space-y-4">
             <!-- Full Name Input -->
             <div class="relative">
-                <input type="text" placeholder="Full Name" class="w-full bg-[#1e1341] text-white p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <input type="text" id="name" name="name" placeholder="Full Name" class="w-full bg-[#1e1341] text-black p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
             <!-- Email Input -->
             <div class="relative">
-                <input type="email" placeholder="Email" class="w-full bg-[#1e1341] text-white p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <input type="email" id="email" name="email" placeholder="Email" class="w-full bg-[#1e1341] text-black p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
             <!-- Password Input -->
             <div class="relative">
-                <input type="password" placeholder="Password" class="w-full bg-[#1e1341] text-white p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
-            </div>
-            <!-- Confirm Password Input -->
-            <div class="relative">
-                <input type="password" placeholder="Confirm Password" class="w-full bg-[#1e1341] text-white p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <input type="password" id="password" name="password" placeholder="Password" class="w-full bg-[#1e1341] text-black p-3 rounded-lg border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
             <!-- Sign Up Button -->
-            <button class="w-full bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg transition">
+            <button class="w-full bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg transition" type="submit">
                 Sign Up
             </button>
             <!-- OR Divider -->
@@ -49,9 +47,52 @@
             </button>
         </form>
         <!-- Login Link -->
-        <p class="text-gray-300 mt-6">Already have an account? 
-            <a href="#" class="text-purple-400 hover:underline">Log In</a>
+        <p class="text-gray-300 mt-6">Already have an account?
+            <a href="login.html" class="text-purple-400 hover:underline">Log In</a>
         </p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signupForm');
+
+            signupForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const response = await fetch('/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            password: password
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        // Signup successful
+                        alert('Signup successful!');
+                        window.location.href = 'addtask.html';
+                    } else {
+                        // Signup failed
+                        alert(data.msg || 'Signup failed');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Signup failed!');
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

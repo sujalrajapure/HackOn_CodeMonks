@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#120a2e] text-white">
+    <div class="p-6">
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 class="text-3xl font-bold">Today</h2>
+                <p class="text-gray-400">Mon 22, 2025 | 10:00 AM</p>
+            </div>
+            <button class="flex items-center gap-2 bg-purple-600 px-5 py-2 rounded-lg shadow-lg hover:bg-purple-500">
+                Start Time Tracker <span class="text-xl">▶️</span>
+            </button>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="grid grid-cols-3 gap-4 mt-6">
+            <div class="bg-[#1e1341] p-4 rounded-lg text-center shadow-lg">
+                <p class="text-lg">Weekly Activity</p>
+                <h3 class="text-2xl font-bold">0%</h3>
+            </div>
+            <div class="bg-[#1e1341] p-4 rounded-lg text-center shadow-lg">
+                <p class="text-lg">Worked This Week</p>
+                <h3 class="text-2xl font-bold">40:00:05</h3>
+            </div>
+            <div class="bg-[#1e1341] p-4 rounded-lg text-center shadow-lg">
+                <p class="text-lg">Project Worked</p>
+                <h3 class="text-2xl font-bold">02</h3>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Projects -->
+        <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="bg-[#1e1341] p-4 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-gray-800 h-24 rounded-lg"></div>
+                    <div class="bg-gray-800 h-24 rounded-lg"></div>
+                    <div class="bg-gray-800 h-24 rounded-lg"></div>
+                    <div class="bg-gray-800 h-24 rounded-lg"></div>
+                </div>
+            </div>
+            <div class="bg-[#1e1341] p-4 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">Projects</h3>
+                <div class="space-y-2">
+                    <p>Project One <span class="float-right">60%</span></p>
+                    <div class="w-full bg-gray-700 h-2 rounded-full">
+                        <div class="bg-purple-500 h-2 rounded-full w-[60%]"></div>
+                    </div>
+                    <p>Project Two <span class="float-right">80%</span></p>
+                    <div class="w-full bg-gray-700 h-2 rounded-full">
+                        <div class="bg-purple-500 h-2 rounded-full w-[80%]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Members & To-Do List -->
+        <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="bg-[#1e1341] p-4 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">Members</h3>
+                <p>John Doe <span class="float-right">Today: 4h</span></p>
+                <p>Jane Smith <span class="float-right">Today: 6h</span></p>
+            </div>
+            <div class="bg-[#1e1341] p-4 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">To Do</h3>
+                <p><strong>Creating Wireframe</strong> <span class="float-right">Due: 22 Feb</span></p>
+                <p><strong>Research Development</strong> <span class="float-right">Due: 25 Feb</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

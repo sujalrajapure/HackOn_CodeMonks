@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -231,7 +230,6 @@
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
@@ -242,7 +240,6 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -273,26 +270,23 @@
         }
     </style>
 </head>
-
 <body>
     <nav>
         <div class="logo">Vocablo</div>
         <div class="nav-links">
-            <button class="nav-btn" onclick="window.location.href='index.html'">Home</button>
-            <button  >Story</button>
-            <button class="nav-btn"  onclick="window.location.href='quizes.html'">Battle</button>
+            <button class="nav-btn">Home</button>
+            <button onclick="selectChallenge('index')" class="nav-btn">Story</button>
+            <button class="nav-btn">Battle</button>
             <button class="nav-btn">AboutUS</button>
-           
-            <button class="nav-btn sign-btn" onclick="window.location.href='signup.html'">Sign Up</button>
-<button class="nav-btn sign-btn" onclick="window.location.href='login.html'">login</button>
+            <button class="nav-btn sign-btn">Sign Up</button>
+            <button class="nav-btn sign-btn">Sign In</button>
         </div>
     </nav>
 
     <main>
         <h1 class="hero-title">Level Up Your Vocabulary: Play, Learn, and Conquer Words!</h1>
-        <p class="hero-subtitle">Learn new words the fun way! Play challenges, take quizzes, and solve puzzles to expand
-            your vocabulary effortlessly.</p>
-        <button class="get-started-btn" onclick="window.location.href='signup.html'">Get Started</button>
+        <p class="hero-subtitle">Learn new words the fun way! Play challenges, take quizzes, and solve puzzles to expand your vocabulary effortlessly.</p>
+        <button class="get-started-btn" onclick="startGame()">Get Started</button>
 
         <h2 class="topic-title">Hello Learner! What topic are you interested in?</h2>
         <div class="cards-grid">
@@ -306,7 +300,7 @@
             </div>
             <div class="card" onclick="selectChallenge('quiz')">
                 <div class="card-icon">📚</div>
-                <div class="card-title" onclick="window.location.href='quizes.html'">Quiz</div>
+                <div class="card-title">Quiz</div>
             </div>
             <div class="card" onclick="selectChallenge('battle')">
                 <div class="card-icon">⚔️</div>
@@ -397,26 +391,26 @@
 
         function renderQuestion() {
             const challenge = challenges[currentType];
-
+            
             if (currentQuestionIndex >= challenge.length) {
                 showGameOver();
                 return;
             }
 
             const questionData = challenge[currentQuestionIndex];
-
-            document.getElementById('challenge-type').textContent =
+            
+            document.getElementById('challenge-type').textContent = 
                 `Challenge: ${currentType.charAt(0).toUpperCase() + currentType.slice(1)}`;
-            document.getElementById('progress').textContent =
+            document.getElementById('progress').textContent = 
                 `Question: ${currentQuestionIndex + 1} / ${challenge.length}`;
-            document.getElementById('score').textContent =
+            document.getElementById('score').textContent = 
                 `Score: ${score}`;
             document.getElementById('question').textContent = questionData.question;
-
+            
             const optionsHtml = questionData.options.map(option => `
                 <button class="option-btn" onclick="checkAnswer('${option}')">${option}</button>
             `).join('');
-
+            
             document.getElementById('options').innerHTML = optionsHtml;
             document.getElementById('feedback').innerHTML = '';
         }
@@ -425,11 +419,11 @@
             const challenge = challenges[currentType];
             const questionData = challenge[currentQuestionIndex];
             const isCorrect = answer === questionData.correctAnswer;
-
+            
             const feedback = document.getElementById('feedback');
             feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.textContent = isCorrect ?
-                'Correct!' :
+            feedback.textContent = isCorrect ? 
+                'Correct!' : 
                 `Incorrect! The correct answer was: ${questionData.correctAnswer}`;
 
             if (isCorrect) {
@@ -465,5 +459,4 @@
         startGame();
     </script>
 </body>
-
 </html>
