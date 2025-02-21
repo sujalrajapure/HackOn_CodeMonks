@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocabMaster - Gamified Vocabulary Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold">VocabMaster</div>
+                <div class="flex space-x-4">
+                    <a href="#dashboard" class="hover:text-blue-200">Dashboard</a>
+                    <a href="#categories" class="hover:text-blue-200">Categories</a>
+                    <a href="#games" class="hover:text-blue-200">Games</a>
+                    <a href="#profile" class="hover:text-blue-200">Profile</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <!-- Welcome Section -->
+        <section class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome to VocabMaster</h1>
+            <p class="text-gray-600">Learn new words through fun challenges and games</p>
+        </section>
+
+        <!-- Categories Grid -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Word Categories</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Science</h3>
+                    <p class="text-gray-600 mb-4">Explore scientific terminology</p>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Start Learning</button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Business</h3>
+                    <p class="text-gray-600 mb-4">Master business vocabulary</p>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Start Learning</button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Everyday Language</h3>
+                    <p class="text-gray-600 mb-4">Learn common expressions</p>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Start Learning</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Featured Games</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Word Puzzle</h3>
+                    <p class="text-gray-600 mb-4">Solve crosswords and word searches</p>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Play Now</button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Flashcards</h3>
+                    <p class="text-gray-600 mb-4">Test your memory with flashcards</p>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Play Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Progress</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Level 1</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <p class="text-gray-600">Words Learned</p>
+                        <p class="text-2xl font-bold text-blue-600">0</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Points Earned</p>
+                        <p class="text-2xl font-bold text-blue-600">0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2024 VocabMaster. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
