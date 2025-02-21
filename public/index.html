@@ -1,469 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocablo - Level Up Your Vocabulary</title>
+    <title>VocabMaster Battle</title>
+    <script src="/socket.io/socket.io.js"></script>
     <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        }
-
         body {
-            min-height: 100vh;
-            background: linear-gradient(to bottom, #7c3aed, #6d28d9);
-            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
         }
-
-        /* Navigation Styles */
-        nav {
-            padding: 1rem 2rem;
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .game-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s;
-        }
-
-        .nav-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sign-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .sign-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Main Content Styles */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s forwards;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeIn 0.6s 0.3s forwards;
-        }
-
-        .get-started-btn {
-            background-color: white;
-            color: #6d28d9;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.125rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            margin-bottom: 4rem;
-            transition: transform 0.2s;
-            opacity: 0;
-            animation: fadeInUp 0.6s 0.6s forwards;
-        }
-
-        .get-started-btn:hover {
-            transform: translateY(-2px);
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
-        .topic-title {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeIn 0.6s 0.9s forwards;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            opacity: 0;
-            animation: fadeIn 0.6s 1.2s forwards;
-        }
-
-        .card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            padding: 2rem;
-            border-radius: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            font-size: 2rem;
             margin-bottom: 1rem;
         }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        /* Game Container Styles */
-        .game-container {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 2rem auto;
-            color: #1f2937;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .game-header {
+        .scores {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
-
-        .question {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            animation: fadeIn 0.5s;
+        .definition {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
         }
-
-        .options {
-            display: grid;
-            gap: 1rem;
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-
-        .option-btn {
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            padding: 1rem;
-            text-align: left;
-            border-radius: 0.5rem;
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.2s;
             font-size: 1rem;
         }
-
-        .option-btn:hover {
-            background: #e5e7eb;
+        button:hover {
+            background-color: #45a049;
         }
-
-        .feedback {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            animation: fadeIn 0.3s;
-        }
-
-        .feedback.correct {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .feedback.incorrect {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Footer Styles */
-        footer {
+        .game-over {
             text-align: center;
-            padding: 2rem;
-            color: rgba(255, 255, 255, 0.6);
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-                padding: 0 1rem;
-            }
+        #join {
+            margin-bottom: 20px;
         }
     </style>
 </head>
-
 <body>
-    <nav>
-        <div class="logo">Vocablo</div>
-        <div class="nav-links">
-            <button class="nav-btn" onclick="window.location.href='index.html'">Home</button>
-            <button  >Story</button>
-            <button class="nav-btn"  onclick="window.location.href='quizes.html'">Battle</button>
-            <button class="nav-btn">AboutUS</button>
-           
-            <button class="nav-btn sign-btn" onclick="window.location.href='signup.html'">Sign Up</button>
-<button class="nav-btn sign-btn" onclick="window.location.href='login.html'">login</button>
+    <div class="container">
+        <h1>VocabMaster Battle</h1>
+        <div id="join">
+            <input type="text" id="playerId" placeholder="Enter your player ID" />
+            <button id="joinButton">Join Game</button>
         </div>
-    </nav>
-
-    <main>
-        <h1 class="hero-title">Level Up Your Vocabulary: Play, Learn, and Conquer Words!</h1>
-        <p class="hero-subtitle">Learn new words the fun way! Play challenges, take quizzes, and solve puzzles to expand
-            your vocabulary effortlessly.</p>
-        <button class="get-started-btn" onclick="window.location.href='signup.html'">Get Started</button>
-
-        <h2 class="topic-title">Hello Learner! What topic are you interested in?</h2>
-        <div class="cards-grid">
-            <div class="card" onclick="selectChallenge('synonym')">
-                <div class="card-icon">🎮</div>
-                <div class="card-title">Challenge</div>
-            </div>
-            <div class="card" onclick="selectChallenge('puzzle')">
-                <div class="card-icon">🧩</div>
-                <div class="card-title">Puzzle</div>
-            </div>
-            <div class="card" onclick="selectChallenge('quiz')">
-                <div class="card-icon">📚</div>
-                <div class="card-title" onclick="window.location.href='quizes.html'">Quiz</div>
-            </div>
-            <div class="card" onclick="selectChallenge('battle')">
-                <div class="card-icon">⚔️</div>
-                <div class="card-title">Daily Battle</div>
-            </div>
-        </div>
-
-        <div id="game-container" class="game-container">
-            <div class="game-header">
-                <div id="challenge-type"></div>
-                <div id="progress"></div>
-            </div>
-            <div id="score" class="text-center mb-4"></div>
-            <div id="question" class="question"></div>
-            <div id="options" class="options"></div>
-            <div id="feedback"></div>
-        </div>
-    </main>
-
-    <footer>
-        © 2025 Vocablo. All rights reserved.
-    </footer>
+        <div id="game-container"></div>
+    </div>
 
     <script>
-        // Challenge Data
-        const challenges = {
-            synonym: [
-                {
-                    type: 'synonym',
-                    question: 'Which word is a synonym for "happy"?',
-                    options: ['Sad', 'Joyful', 'Angry', 'Tired'],
-                    correctAnswer: 'Joyful'
-                },
-                {
-                    type: 'synonym',
-                    question: 'Which word is a synonym for "fast"?',
-                    options: ['Slow', 'Quick', 'Lazy', 'Dull'],
-                    correctAnswer: 'Quick'
-                },
-                // Add more synonym questions here
-            ],
-            puzzle: [
-                {
-                    type: 'puzzle',
-                    question: 'Unscramble the word: RLNAE',
-                    options: ['LEARN', 'NEAR', 'LANE', 'REAL'],
-                    correctAnswer: 'LEARN'
-                }
-                // Add more puzzle questions here
-            ],
-            quiz: [
-                {
-                    type: 'quiz',
-                    question: 'What does "ubiquitous" mean?',
-                    options: ['Rare', 'Common', 'Hidden', 'Secret'],
-                    correctAnswer: 'Common'
-                }
-                // Add more quiz questions here
-            ],
-            battle: [
-                {
-                    type: 'battle',
-                    question: 'Complete the sentence: The ____ dog barked loudly.',
-                    options: ['Quiet', 'Fierce', 'Gentle', 'Timid'],
-                    correctAnswer: 'Fierce'
-                }
-                // Add more battle questions here
-            ]
-        };
+       const socket = io(); // Initialize Socket.IO connection
 
-        let currentType = null;
-        let currentQuestionIndex = 0;
-        let score = 0;
+const dummyWords = [
+    { word: 'Ephemeral', definition: 'Lasting for a very short time' },
+    { word: 'Ubiquitous', definition: 'Present, appearing, or found everywhere' },
+    { word: 'Eloquent', definition: 'Fluent or persuasive in speaking or writing' },
+    { word: 'Pragmatic', definition: 'Dealing with things sensibly and realistically' },
+    { word: 'Serendipity', definition: 'The occurrence and development of events by chance in a happy or beneficial way' },
+];
 
-        function startGame() {
-            document.querySelector('.cards-grid').style.display = 'grid';
-            document.getElementById('game-container').style.display = 'none';
-        }
+class BattleGame {
+    constructor(playerId) {
+        this.round = 1;
+        this.playerScore = 0;
+        this.opponentScore = 0; // Default opponent score is 0
+        this.currentWord = dummyWords[0];
+        this.timeLeft = 30;
+        this.gameOver = false;
+        this.gameContainer = document.getElementById('game-container');
+        this.timer = null;
+        this.playerId = playerId; // Store player ID
+        this.opponentId = null; // Track opponent ID
+    }
 
-        function selectChallenge(type) {
-            currentType = type;
-            currentQuestionIndex = 0;
-            score = 0;
-            document.querySelector('.cards-grid').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
-            renderQuestion();
-        }
+    start() {
+        socket.emit('joinGame', this.playerId); // Notify server that the player has joined
+        this.render();
+        this.startTimer();
+    }
 
-        function renderQuestion() {
-            const challenge = challenges[currentType];
-
-            if (currentQuestionIndex >= challenge.length) {
-                showGameOver();
-                return;
-            }
-
-            const questionData = challenge[currentQuestionIndex];
-
-            document.getElementById('challenge-type').textContent =
-                `Challenge: ${currentType.charAt(0).toUpperCase() + currentType.slice(1)}`;
-            document.getElementById('progress').textContent =
-                `Question: ${currentQuestionIndex + 1} / ${challenge.length}`;
-            document.getElementById('score').textContent =
-                `Score: ${score}`;
-            document.getElementById('question').textContent = questionData.question;
-
-            const optionsHtml = questionData.options.map(option => `
-                <button class="option-btn" onclick="checkAnswer('${option}')">${option}</button>
-            `).join('');
-
-            document.getElementById('options').innerHTML = optionsHtml;
-            document.getElementById('feedback').innerHTML = '';
-        }
-
-        function checkAnswer(answer) {
-            const challenge = challenges[currentType];
-            const questionData = challenge[currentQuestionIndex];
-            const isCorrect = answer === questionData.correctAnswer;
-
-            const feedback = document.getElementById('feedback');
-            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.textContent = isCorrect ?
-                'Correct!' :
-                `Incorrect! The correct answer was: ${questionData.correctAnswer}`;
-
-            if (isCorrect) {
-                score++;
-            }
-
-            // Disable all option buttons
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(button => button.disabled = true);
-
-            setTimeout(() => {
-                currentQuestionIndex++;
-                renderQuestion();
-            }, 1500);
-        }
-
-        function showGameOver() {
-            const challenge = challenges[currentType];
-            const gameContainer = document.getElementById('game-container');
-            gameContainer.innerHTML = `
-                <div style="text-align: center;">
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Challenge Complete!</h2>
-                    <p style="font-size: 1.25rem; margin-bottom: 2rem;">Your Score: ${score} / ${challenge.length}</p>
-                    <button class="get-started-btn" onclick="selectChallenge('${currentType}')">Play Again</button>
-                    <button class="get-started-btn" onclick="startGame()" style="background: #f3f4f6; color: #4b5563; margin-left: 1rem;">
-                        Back to Challenge Selection
-                    </button>
+    render() {
+        if (this.gameOver) {
+            this.gameContainer.innerHTML = `
+                <div class="game-over">
+                    <h2>Game Over!</h2>
+                    <p>Your Score: ${this.playerScore}</p>
+                    <p>Opponent's Score: ${this.opponentScore}</p>
+                    <p><strong>${this.getGameResult()}</strong></p>
+                    <button onclick="startNewGame()">Play Again</button>
                 </div>
             `;
+        } else {
+            const previousAnswer = document.getElementById('player-answer')?.value || '';
+
+            this.gameContainer.innerHTML = `
+                <div class="game-info">
+                    <div>Round: ${this.round}/5</div>
+                    <div>Time Left: ${this.timeLeft}s</div>
+                </div>
+                <div class="scores">
+                    <div>Your Score: ${this.playerScore}</div>
+                    <div>Opponent's Score: ${this.opponentScore}</div>
+                </div>
+                <p class="definition">Definition: ${this.currentWord.definition}</p>
+                <input type="text" id="player-answer" placeholder="Enter the word" required>
+                <button id="submitAnswer">Submit</button>
+            `;
+
+            setTimeout(() => {
+                const inputField = document.getElementById('player-answer');
+                inputField.value = previousAnswer;
+                inputField.focus();
+            }, 50);
+
+            document.getElementById('submitAnswer').addEventListener('click', () => this.submitAnswer());
+        }
+    }
+
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.timeLeft--;
+            if (this.timeLeft <= 0) {
+                this.nextRound();
+            }
+            this.render();
+        }, 1000);
+    }
+
+    submitAnswer() {
+        const playerAnswer = document.getElementById('player-answer').value.trim();
+        if (playerAnswer.toLowerCase() === this.currentWord.word.toLowerCase()) {
+            this.playerScore += 10;
         }
 
-        // Initialize the game
-        startGame();
+        socket.emit('submitAnswer', { playerId: this.playerId, answer: playerAnswer });
+
+        this.nextRound();
+    }
+
+    nextRound() {
+        clearInterval(this.timer);
+
+        this.round++;
+        if (this.round > 5) {
+            this.gameOver = true;
+            this.render();
+        } else {
+            this.currentWord = dummyWords[this.round - 1];
+            this.timeLeft = 30;
+            this.render();
+            this.startTimer();
+        }
+    }
+
+    getGameResult() {
+        if (this.playerScore > this.opponentScore) {
+            return 'You Win!';
+        } else if (this.playerScore < this.opponentScore) {
+            return 'You Lose!';
+        } else {
+            return 'It\'s a Tie!';
+        }
+    }
+}
+
+// Start a new game
+function startNewGame() {
+    const playerId = document.getElementById('playerId').value.trim();
+    if (playerId) {
+        game = new BattleGame(playerId);
+        game.start();
+        document.getElementById('join').style.display = 'none';
+    } else {
+        alert("Please enter a valid player ID.");
+    }
+}
+
+// Start game when the page loads
+window.onload = () => {
+    document.getElementById('joinButton').addEventListener('click', startNewGame);
+};
+
+// 🔥 Live opponent score updates
+socket.on('updateScores', (data) => {
+    if (data.opponentId === game.opponentId) {
+        game.opponentScore = data.opponentScore;
+        game.render();
+    }
+});
+
+// Server events to sync words and scores
+socket.on('startGame', (data) => {
+    game.opponentId = data.opponentId || null;
+    game.currentWord = data.word;
+    game.render();
+});
+
+socket.on('nextRound', (data) => {
+    game.currentWord = data.word;
+    game.render();
+});
+
+socket.on('gameOver', (data) => {
+    game.playerScore = data.scores[game.playerId] || 0;
+    game.opponentScore = data.scores[data.opponentId] || 0;
+    game.gameOver = true;
+    game.render();
+});
+
+
     </script>
 </body>
-
 </html>
