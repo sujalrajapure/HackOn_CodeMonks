@@ -113,6 +113,13 @@
           box-sizing: border-box;
         }
 
+        /* Styles for Score Display */
+        .score-display {
+          font-size: 1.2em;
+          text-align: center;
+          margin-bottom: 10px;
+        }
+
         @media (min-width: 768px) {
             body {
                 padding: 40px;
@@ -201,6 +208,13 @@
             <!-- Result Message (Initially Hidden) -->
             <div id="resultMessage" class="mt-4 hidden text-lg text-center"></div>
             <div id="finalScore" class="mt-4 hidden text-lg text-center"></div>
+
+            <!-- Opponent Score Display -->
+            <div id="opponentScore" class="mt-4 hidden score-display"></div>
+
+            <!-- Win/Lose Message -->
+            <div id="winLoseMessage" class="mt-4 hidden text-2xl font-bold text-center"></div>
+
         </div>
     </main>
 
@@ -243,11 +257,14 @@
         const questionNumberElement = document.getElementById('question-number');
         const finalScoreElement = document.getElementById('finalScore');
         const questionNumberDisplay = document.getElementById('questionNumberDisplay');
+        const opponentScoreElement = document.getElementById('opponentScore');  // Added
+        const winLoseMessageElement = document.getElementById('winLoseMessage'); // Added
 
         let timeLeft = 15; // Time in seconds for each question
         let currentQuestionIndex = 0;
         let score = 0;
         let timerInterval;
+        let opponentScore = Math.floor(Math.random() * 5); // Generate random opponent score
 
         function loadQuestion() {
         const currentQuestionData = quizData[currentQuestionIndex];
@@ -315,8 +332,17 @@
         timerDisplay.classList.add('hidden');
         submitQuizBtn.classList.add('hidden');
 
-        finalScoreElement.textContent = `Quiz Complete! Your Score: ${score}/${quizData.length}`;
+        finalScoreElement.textContent = `Your Score: ${score}/${quizData.length}`;
         finalScoreElement.classList.remove('hidden');
+
+            // Display opponent's score
+            opponentScoreElement.textContent = `Opponent's Score: ${opponentScore}/${quizData.length}`;
+            opponentScoreElement.classList.remove('hidden');
+
+            // Determine and display win/lose message
+            let winLoseMessage = score > opponentScore ? "You Win!" : score < opponentScore ? "You Lose!" : "It's a Tie!";
+            winLoseMessageElement.textContent = winLoseMessage;
+            winLoseMessageElement.classList.remove('hidden');
     }
 
         function updateProgressNumbers() {
