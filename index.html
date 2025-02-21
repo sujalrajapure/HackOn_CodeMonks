@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocablo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #6366F1, #A855F7); /* Purple gradient background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden; /* Hide scrollbars */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full height */
+            align-items: center; /* Center content horizontally */
+            justify-content: flex-start; /* Align content to the top */
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        /* Example of glowing effect */
+        .glowing-button {
+            background: linear-gradient(to right, #A855F7, #6366F1);
+            box-shadow: 0 0 10px 5px rgba(168, 85, 247, 0.5);
+            transition: box-shadow 0.3s ease;
+            margin-top: 50px;
+        }
+
+        .glowing-button:hover {
+            box-shadow: 0 0 15px 7px rgba(168, 85, 247, 0.7);
+        }
+
+        /* Abstract 3D Shapes (CSS placeholders - needs actual 3D rendering or images) */
+        .shape {
+            position: absolute;
+            opacity: 0.5;
+            /* Add more styling for shapes */
+        }
+        .main-container {
+            width: 90%; /* Adjust the width to match the image */
+            max-width: 1200px; /* Limit the maximum width */
+            margin: 0 auto; /* Center the container */
+        }
+         .nav-items a {
+            font-size: 0.9rem; /* Reduced font size */
+            padding: 0.5rem 1rem; /* Reduced padding */
+            transition: color 0.3s ease; /* Smooth transition */
+            color: #ffffff;
+            margin-top: 100px;
+        }
+
+        .nav-items a:hover {
+            color: #ffffff; /* Hover color */
+        }
+
+        .nav-items .sign-up-button {
+            background-color: rgba(255, 255, 255, 0.5); /* Glassmorphism-like background */
+            border-radius: 20px; /* Rounded corners */
+            padding: 0.5rem 1rem; /* Padding */
+            color: #ffffff; /* Text color */
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s ease; /* Transition effect */
+             color: #ffffff;
+        }
+
+        .nav-items .sign-up-button:hover {
+            background-color: rgba(255, 255, 255, 0.7); /* Darker background on hover */
+        }
+          .greeting-text {
+        text-align: center; /* Center the text */
+        width: 100%; /* Make sure it spans the whole width */
+        margin-top: 12px; /* Add some top margin */
+        font-size: 1.25rem; /* 20px */
+        line-height: 1.75rem; /* 28px */
+        color: #ffffff;
+    }
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 50px;
+        margin-right: 50px;
+    }
+
+    .quiz-description {
+        color: #ffffff; /* Adjust color to match the image */
+        margin-bottom: 2rem;
+        margin-top: 10px;
+    }
+      .topic-selection {
+        margin-top: 2rem;
+        width: 100%; /* Make sure it spans the whole width */
+        margin-top: 50px;
+    }
+
+    .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 columns */
+        gap: 1rem;
+        align-items: center;
+        padding-left: 15%;
+    }
+
+    .topic-button {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.2); /* Adjust background color */
+        border-radius: 0.75rem; /* 12px */
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+    }
+
+    .topic-button:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+      footer {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+            margin-top: auto; /* Push footer to the bottom */
+        }
+        .vocablo-logo {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+        }
+         header {
+        /* Ensure the header takes up the full width */
+        margin-bottom: 2rem; /* Add some margin below the header */
+    }
+</style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-start p-8">
+
+    <div class="main-container">
+        <!-- Header Navigation Bar -->
+          <header class="flex justify-between items-center w-full p-4">
+        <div class="flex items-center">
+
+            <h1 class="text-2xl font-bold">Vocablo</h1>
+        </div>
+        <nav class="nav-items">
+            <ul class="flex space-x-4">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Story</a></li>
+                <li><a href="#">Battle</a></li>
+                <li><a href="#">AboutUS</a></li>
+                <li><a href="#" class="sign-up-button">Sign Up</a></li>
+                <li><a href="#" class="sign-up-button">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+        <!-- Main Content -->
+         <main class="main-content">
+        <h1 class="text-4xl font-bold">Level Up Your Vocabulary: Play, Learn, and Conquer Words!</h1>
+        <h2 class="quiz-description">Learn new words the fun way! Play challenges, take quizzes, and solve puzzles to expand your vocabulary effortlessly.</h2>
+
+        <!-- Call-to-Action Button -->
+        <button class="glowing-button text-white font-bold py-2 px-6 rounded-full focus:outline-none hover:bg-purple-700">
+            Get  Strated
+        </button>
+
+        <!-- Greeting Text -->
+        <p class="greeting-text">Hello Learner! What topic are you interested in?</p>
+
+        <!-- Topic Selection Section -->
+        <div class="topic-selection">
+            <div class="topic-grid">
+               <div class="topic-button">
+                    Science
+                </div>
+                <div class="topic-button">
+                    Business
+                </div>
+                 <div class="topic-button">
+                    EveryDay life
+                </div>
+                <div class="topic-button">
+
+                     Sport
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+    <footer class="bg-white-100 text-center text-gray-700 p-4">
+        &copy; 2025 Vocablo. All rights reserved.
+    </footer>
+
+</body>
+</html>

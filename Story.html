@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryQuiz - Gamified Vocabulary</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #6366F1, #A855F7);
+            /* Purple gradient background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Glowing Button Effect */
+        .glowing-button {
+            background: linear-gradient(to right, #A855F7, #6366F1);
+            box-shadow: 0 0 10px 5px rgba(168, 85, 247, 0.5);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .glowing-button:hover {
+            box-shadow: 0 0 15px 7px rgba(168, 85, 247, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* Story Card Hover Effect */
+        .story-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Grid Layout */
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            text-align: center;
+            color: #ffffff;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .responsive-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col items-center justify-start p-8">
+
+    <div class="main-container w-full max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <header class="flex justify-between items-center w-full p-4 mb-8">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold">StoryQuiz</h1>
+            </div>
+            <nav class="nav-items">
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="text-white hover:text-purple-300">Home</a></li>
+                    <li><a href="#" class="text-white hover:text-purple-300">Story Mode</a></li>
+                    <li><a href="#" class="text-white hover:text-purple-300">Puzzles</a></li>
+                    <li><a href="#" class="sign-up-button glowing-button text-white font-bold py-2 px-4 rounded-full">
+                            Sign In
+                        </a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Story Mode Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6">Story Mode</h2>
+            <p class="text-center text-lg mb-8">Embark on exciting story-based quizzes to level up your vocabulary!</p>
+            <div class="responsive-grid">
+                <!-- Story Card 1 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">The Lost Kingdom</h3>
+                    <p class="text-sm mb-4">Uncover ancient words in this thrilling adventure.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+                <!-- Story Card 2 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Space Odyssey</h3>
+                    <p class="text-sm mb-4">Learn cosmic vocabulary while exploring the universe.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+                <!-- Story Card 3 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2">Mystery of the Forest</h3>
+                    <p class="text-sm mb-4">Solve puzzles and discover hidden words in the forest.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Word Cross & Puzzle Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6">Word Cross & Puzzles</h2>
+            <p class="text-center text-lg mb-8">Challenge yourself with fun word games and puzzles!</p>
+            <div class="responsive-grid">
+                <!-- Puzzle Card 1 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <img src="https://via.placeholder.com/50" alt="Word Cross Icon" class="mx-auto mb-4">
+                    <h3 class="text-xl font-bold mb-2">Word Cross</h3>
+                    <p class="text-sm mb-4">Connect letters to form meaningful words.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+                <!-- Puzzle Card 2 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <img src="https://via.placeholder.com/50" alt="Vocabulary Puzzle Icon" class="mx-auto mb-4">
+                    <h3 class="text-xl font-bold mb-2">Vocabulary Puzzle</h3>
+                    <p class="text-sm mb-4">Solve vocabulary-based challenges to unlock new levels.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+                <!-- Puzzle Card 3 -->
+                <div class="story-card glassmorphism p-6 text-center">
+                    <img src="https://via.placeholder.com/50" alt="Crossword Icon" class="mx-auto mb-4">
+                    <h3 class="text-xl font-bold mb-2">Crossword Challenge</h3>
+                    <p class="text-sm mb-4">Test your vocabulary with classic crossword puzzles.</p>
+                    <button class="glowing-button text-white font-bold py-2 px-4 rounded-full">
+                        Play
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full">
+        &copy; 2025 StoryQuiz. All rights reserved.
+    </footer>
+
+</body>
+
+</html>
