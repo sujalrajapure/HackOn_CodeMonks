@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz | Quizopolis</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #4F46E5, #9333EA);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column; /* Ensure content stacks */
+        }
+
+        .glowing-button {
+            background: linear-gradient(to right, #A855F7, #6366F1);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .glowing-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.8);
+        }
+
+        #timer {
+            font-size: 1.2em;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .question-number {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .answer-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: left;
+        }
+
+        .answer-label:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        #progress-numbers {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .progress-number.active {
+            background-color: rgba(255, 255, 255, 0.6);
+            color: #333;
+        }
+
+        /* Added Styles */
+        #question-container {
+            margin-bottom: 20px;
+        }
+
+        /* Footer Style for the Submit Button */
+        .quiz-footer {
+          margin-top: auto;  /* Push it to the bottom */
+          padding: 10px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 40px;
+            }
+
+            .glassmorphism {
+                max-width: 500px;
+            }
+
+            .glowing-button {
+                padding: 12px 24px;
+                font-size: 1em;
+            }
+
+            #timer {
+                font-size: 1.5em;
+            }
+
+            .question-number {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen">
+
+    <!-- Quiz Section -->
+    <main class="flex flex-col items-center w-full">
+
+        <!-- Quiz Card -->
+        <div class="glassmorphism">
+
+            <!-- Top Bar with Timer and Submit Button -->
+            <div class="flex justify-between items-center mb-4">
+                <a href="#" class="hover:text-gray-200"><</a>
+                <div class="flex items-center">
+                  <div id="timer" class="text-white"></div>
+                  <div id = "timerExtra">
+                    <span id="questionNumberDisplay" class="text-sm font-bold text-white">1/5</span>
+                    <span id="coinDisplay" class="text-sm font-bold text-white">30</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Progress Numbers -->
+            <div id="progress-numbers" class="flex justify-center mb-4">
+                <div class="progress-number active" data-question="1">1</div>
+                <div class="progress-number" data-question="2">2</div>
+                <div class="progress-number" data-question="3">3</div>
+                <div class="progress-number" data-question="4">4</div>
+                <div class="progress-number" data-question="5">5</div>
+            </div>
+
+            <!-- Question and Answers -->
+            <div id="question-container" class="p-4">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                  <span class="question-number mr-2" id="question-number">4.</span>
+                  <span id="question-text">Among the following States of India, which one has the oldest rock formations in the country?</span>
+                </h3>
+                <div id="answer-options">
+                  <label class="answer-label">
+                      <input type="radio" name="quiz" value="A" />
+                      A. Assam
+                  </label>
+                  <label class="answer-label">
+                      <input type="radio" name="quiz" value="B" />
+                      B. Bihar
+                  </label>
+                  <label class="answer-label">
+                      <input type="radio" name="quiz" value="C" />
+                      C. Karnataka
+                  </label>
+                  <label class="answer-label">
+                      <input type="radio" name="quiz" value="D" />
+                      D. Uttar Pradesh
+                  </label>
+              </div>
+            </div>
+
+            <!-- Footer Style for the Submit Button -->
+            <div class="quiz-footer">
+              <button id="submitQuizBtn" class="glowing-button text-white w-full">Submit</button>
+            </div>
+
+            <!-- Result Message (Initially Hidden) -->
+            <div id="resultMessage" class="mt-4 hidden text-lg text-center"></div>
+            <div id="finalScore" class="mt-4 hidden text-lg text-center"></div>
+        </div>
+    </main>
+
+    <script>
+    const quizData = [
+    {
+        question: "What is the capital of France?",
+        options: ["Berlin", "Madrid", "Paris", "Rome"],
+        correctAnswer: "C"
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        correctAnswer: "B"
+    },
+    {
+        question: "What is the largest mammal on Earth?",
+        options: ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+        correctAnswer: "B"
+    },
+    {
+        question: "Which gas do plants absorb from the atmosphere?",
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        correctAnswer: "B"
+    },
+    {
+        question: "What is the chemical symbol for gold?",
+        options: ["Ag", "Au", "Fe", "Cu"],
+        correctAnswer: "B"
+    }
+];
+
+        const timerDisplay = document.getElementById('timer');
+        const submitQuizBtn = document.getElementById('submitQuizBtn');
+        const resultMessage = document.getElementById('resultMessage');
+        const questionContainer = document.getElementById('question-container');
+        const answerOptionsContainer = document.getElementById('answer-options');
+        const questionTextElement = document.getElementById('question-text');
+        const progressNumbersContainer = document.getElementById('progress-numbers');
+        const questionNumberElement = document.getElementById('question-number');
+        const finalScoreElement = document.getElementById('finalScore');
+        const questionNumberDisplay = document.getElementById('questionNumberDisplay');
+
+        let timeLeft = 15; // Time in seconds for each question
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerInterval;
+
+        function loadQuestion() {
+        const currentQuestionData = quizData[currentQuestionIndex];
+        questionTextElement.textContent = currentQuestionData.question;
+        questionNumberElement.textContent = `${currentQuestionIndex + 1}.`;
+        questionNumberDisplay.textContent = `${currentQuestionIndex + 1}/${quizData.length}`;
+
+        answerOptionsContainer.innerHTML = '';
+        currentQuestionData.options.forEach((option, index) => {
+            const answerLabel = document.createElement('label');
+            answerLabel.classList.add('answer-label');
+            answerLabel.innerHTML = `
+                <input type="radio" name="quiz" value="${String.fromCharCode(65 + index)}" />
+                ${String.fromCharCode(65 + index)}. ${option}
+            `;
+            answerOptionsContainer.appendChild(answerLabel);
+        });
+    }
+
+        function startTimer() {
+        timerInterval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                showResult();
+            } else {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                timeLeft--;
+            }
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 15;
+        updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="quiz"]:checked');
+            if (!selectedOption) {
+                alert('Please select an answer.');
+                return false;
+            }
+
+            const answer = selectedOption.value;
+            if (answer === quizData[currentQuestionIndex].correctAnswer) {
+                score++;
+            }
+
+            return true;
+        }
+
+        function showResult() {
+        clearInterval(timerInterval);
+        questionContainer.classList.add('hidden');
+        progressNumbersContainer.classList.add('hidden');
+        timerDisplay.classList.add('hidden');
+        submitQuizBtn.classList.add('hidden');
+
+        finalScoreElement.textContent = `Quiz Complete! Your Score: ${score}/${quizData.length}`;
+        finalScoreElement.classList.remove('hidden');
+    }
+
+        function updateProgressNumbers() {
+            const progressNumbers = document.querySelectorAll('.progress-number');
+            progressNumbers.forEach((number, index) => {
+                if (index === currentQuestionIndex) {
+                    number.classList.add('active');
+                } else {
+                    number.classList.remove('active');
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (checkAnswer()) {
+                resetTimer();
+                currentQuestionIndex++;
+
+                if (currentQuestionIndex < quizData.length) {
+                    loadQuestion();
+                    startTimer();
+                    updateProgressNumbers();
+                } else {
+                    showResult();
+                }
+            }
+        }
+
+    loadQuestion();
+    startTimer();
+    updateProgressNumbers();
+
+    submitQuizBtn.addEventListener('click', nextQuestion);
+    </script>
+
+</body>
+</html>
